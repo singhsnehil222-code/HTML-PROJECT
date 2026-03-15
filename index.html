@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pixel City Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     INTRO
+════════════════════════════════ -->
+<div id="intro">
+  <div class="i-sky"></div>
+  <canvas id="intro-stars"></canvas>
+  <div id="intro-clouds"></div>
+  <div class="i-mtn"></div>
+  <div class="i-mtn2"></div>
+  <div class="i-pines" id="intro-pines"></div>
+  <div class="i-gnd"></div>
+  <div class="i-gnd-rail"></div>
+  <div class="i-buildings" id="intro-buildings"></div>
+  <div class="i-trees" id="intro-trees"></div>
+  <div class="i-walkers" id="intro-walkers"></div>
+  <canvas id="balloon-cv" style="position:absolute;z-index:10;pointer-events:none;top:0;left:0;width:100%;height:100%"></canvas>
+  <div class="i-scan"></div>
+  <div class="i-center">
+    <div class="i-content">
+      <div style="text-align:center;margin-bottom:4px;animation:fadeSlideUp .4s ease .1s both">
+        <span style="font-family:var(--px);font-size:clamp(8px,1.2vw,11px);color:rgba(255,255,255,.9);letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,80,0,.5)">ITM SKILLS UNIVERSITY · B.TECH CSE 2025-29</span>
+      </div>
+      <div style="text-align:center;animation:titlePop .8s cubic-bezier(.175,.885,.32,1.275) both">
+        <span class="i-t1">PIXEL<br>CITY</span>
+        <div class="i-t2">◆ CITY BUILDER ENGINE ◆</div>
+        <div class="i-t3">BUILD · MANAGE · CONQUER YOUR CITY</div>
+      </div>
+
+      <div class="i-form">
+        <!-- Name input with label -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-family:var(--px);font-size:clamp(6px,.9vw,8px);color:rgba(255,255,255,.7);letter-spacing:2px;text-shadow:1px 1px 0 rgba(0,80,0,.5)">YOUR MAYOR NAME</div>
+          <input class="i-inp" id="pname" placeholder="ENTER NAME" maxlength="14" autocomplete="off">
+        </div>
+        <!-- Wood block button row -->
+        <div class="i-row" style="margin-top:4px">
+          <div class="i-wood-block">
+            <button class="i-btn" id="ibtn">▶ START BUILDING</button>
+          </div>
+          <button class="i-htp-btn" id="htp-open-btn">? HOW TO PLAY</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="i-ver">v3.0 · PIXEL CITY ENGINE</div>
+  <div class="i-inst">PRESS ENTER TO START</div>
+</div>
+
+<!-- ════════════════════════════════
+     HOW TO PLAY
+════════════════════════════════ -->
+<div id="htp-overlay">
+  <div class="htp-box">
+    <div class="htp-header">
+      <div class="htp-title">📖 HOW TO PLAY</div>
+      <button class="htp-close" id="htp-close">✕</button>
+    </div>
+    <div class="htp-body">
+
+      <!-- Guide character speech -->
+      <div class="guide-char">
+        <div class="guide-char-sprite" id="guide-sprite" style="animation:guideBob 1.2s ease-in-out infinite"></div>
+        <div class="guide-speech">
+          <div class="guide-speech-title">🗣 MAYOR'S GUIDE</div>
+          <div class="guide-speech-txt">
+            Hey there, future Mayor! 👋 I'm Pixel Pete, your city advisor.<br>
+            Your mission: grow your city to <span style="color:var(--teal);font-weight:900">1000 citizens</span> without going <span style="color:var(--red);font-weight:900">bankrupt</span>!<br>
+            Build smart — balance housing, income, and happiness. Let's go! 🏙️
+          </div>
+        </div>
+      </div>
+
+      <!-- Buildings reference -->
+      <div class="htp-section">
+        <div class="htp-sec-title">🏗 BUILDINGS</div>
+        <div class="htp-grid">
+          <div class="htp-card"><span class="htp-card-ico">🏠</span><span class="htp-card-name">HOUSE</span><span class="htp-card-cost">💰 200</span><span class="htp-card-fx">+4 pop · +2 😊<br>Basic housing</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🏢</span><span class="htp-card-name">APARTMENT</span><span class="htp-card-cost">💰 500</span><span class="htp-card-fx">+12 pop · +3 😊<br>High density</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🏭</span><span class="htp-card-name">FACTORY</span><span class="htp-card-cost">💰 500</span><span class="htp-card-fx">+$12/4s · -3 😊<br>Main income source</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🏪</span><span class="htp-card-name">SHOP</span><span class="htp-card-cost">💰 350</span><span class="htp-card-fx">+$7/4s · +3 😊<br>Friendly income</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🌳</span><span class="htp-card-name">PARK</span><span class="htp-card-cost">💰 150</span><span class="htp-card-fx">+8 😊 · +1 pop<br>Trees + bench + lamp</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🌿</span><span class="htp-card-name">BUSH</span><span class="htp-card-cost">💰 30</span><span class="htp-card-fx">+2 😊 · decor<br>Key: B</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🪵</span><span class="htp-card-name">FENCE</span><span class="htp-card-cost">💰 20</span><span class="htp-card-fx">Decorative border<br>Key: E</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🛣️</span><span class="htp-card-name">ROAD</span><span class="htp-card-cost">💰 50</span><span class="htp-card-fx">Cars + street lamps<br>Key: R</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🏥</span><span class="htp-card-name">HOSPITAL</span><span class="htp-card-cost">💰 800</span><span class="htp-card-fx">+10 pop · +20 😊<br>Key: J</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🏫</span><span class="htp-card-name">SCHOOL</span><span class="htp-card-cost">💰 600</span><span class="htp-card-fx">+8 pop · +12 😊<br>Key: C</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🌊</span><span class="htp-card-name">LAKE</span><span class="htp-card-cost">💰 100</span><span class="htp-card-fx">+5 😊 · scenic<br>Key: L</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🌉</span><span class="htp-card-name">BRIDGE</span><span class="htp-card-cost">💰 150</span><span class="htp-card-fx">cross water · auto-dir<br>Key: G</span></div>
+          <div class="htp-card"><span class="htp-card-ico">🏙️</span><span class="htp-card-name">SKYSCRAPER</span><span class="htp-card-cost">💰 1500</span><span class="htp-card-fx">+40 pop · premium<br><span class="htp-card-lock">🔒 SAVE 💰1500 FIRST</span></span></div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="htp-section">
+        <div class="htp-sec-title">💡 STRATEGY TIPS</div>
+        <div class="htp-tips">
+          <div class="htp-tip"><span class="htp-tip-ico">🌴</span><span><b>Start by clearing the jungle!</b> Use 💥 Demolish on trees — each earns $15–$35. Clear space before building.</span></div>
+          <div class="htp-tip"><span class="htp-tip-ico">🏭</span><span>Build <b>Factories &amp; Shops</b> first — coins arc directly to your wallet every 4 seconds, Hay Day style!</span></div>
+          <div class="htp-tip"><span class="htp-tip-ico">🪙</span><span>Hit the <b>💹 ECONOMY</b> tab → Collect Mayor Bonus ($50) every 30 seconds for free money!</span></div>
+          <div class="htp-tip"><span class="htp-tip-ico">🌳</span><span>Parks come with 4 tree types, a bench, and a night lamp — they glow beautifully at night!</span></div>
+          <div class="htp-tip"><span class="htp-tip-ico">🛣️</span><span>Lay Roads to get street lamps (auto on at night) and unlock cars + walking citizens.</span></div>
+          <div class="htp-tip"><span class="htp-tip-ico">🏙️</span><span>Skyscraper unlocks when you have <b>💰1500 saved</b> — not by population!</span></div>
+          <div class="htp-tip"><span class="htp-tip-ico">🎬</span><span>Press <b>🎬 CINE</b> for a cinematic flyover view of your city. Drag to exit.</span></div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="htp-section">
+        <div class="htp-sec-title">🎮 CONTROLS</div>
+        <div class="htp-controls">
+          <div class="htp-ctrl"><span class="htp-key">DRAG</span> Orbit camera</div>
+          <div class="htp-ctrl"><span class="htp-key">SCROLL</span> Zoom in/out</div>
+          <div class="htp-ctrl"><span class="htp-key">ARROWS</span> Pan camera</div>
+          <div class="htp-ctrl"><span class="htp-key">CLICK</span> Place / demolish</div>
+          <div class="htp-ctrl"><span class="htp-key">H</span> House</div>
+          <div class="htp-ctrl"><span class="htp-key">F</span> Factory</div>
+          <div class="htp-ctrl"><span class="htp-key">P</span> Park</div>
+          <div class="htp-ctrl"><span class="htp-key">B</span> Bush</div>
+          <div class="htp-ctrl"><span class="htp-key">E</span> Fence</div>
+          <div class="htp-ctrl"><span class="htp-key">R</span> Road</div>
+          <div class="htp-ctrl"><span class="htp-key">D</span> Demolish</div>
+          <div class="htp-ctrl"><span class="htp-key">ESC</span> Cancel</div>
+        </div>
+      </div>
+
+      <button class="mc" id="htp-start-btn" style="font-size:10px;padding:14px;background:linear-gradient(180deg,#6dcc44 0%,#44aa22 40%,#2d8810 100%);color:#fff;border:4px solid #1a5a08;box-shadow:0 5px 0 #0d3304,0 0 20px rgba(80,255,60,.5);font-family:var(--px);text-shadow:0 1px 0 rgba(0,0,0,.4)">▶ START CLEARING JUNGLE!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     GAME
+════════════════════════════════ -->
+<div id="game">
+  <div id="top">
+    <div class="t-logo">⬛PIXEL<br>CITY</div>
+    <div class="t-res">
+      <div class="rchip"><span class="re">💰</span><div class="rb"><span class="rl">MONEY</span><span class="rv m" id="vm">5,000</span></div></div>
+      <div class="rchip"><span class="re">👥</span><div class="rb"><span class="rl">POP</span><span class="rv p" id="vp">0</span></div></div>
+      <div class="rchip"><span class="re">😊</span><div class="rb"><span class="rl">HAPPY</span><span class="rv h" id="vh">50%</span></div></div>
+      <div class="rchip"><span class="re">📈</span><div class="rb"><span class="rl">$/SEC</span><span class="rv i" id="vi">+0</span></div></div>
+    </div>
+    <div class="t-right">
+      <div class="t-meta"><span class="tmtxt" id="vtime">☀️ DAY 1</span><span class="sctxt">SCORE: <span id="vscore">0</span></span></div>
+      <button class="ibtn go" id="htp-game-btn">? GUIDE</button>
+      <button class="ibtn tl" id="btn-cin">🎬 CINE</button>
+      <button class="ibtn tl" id="blb">🏆</button>
+      <button class="ibtn rd" id="brs">↺</button>
+    </div>
+  </div>
+
+  <div id="mid">
+    <!-- LEFT PANEL -->
+    <div id="lp">
+      <div class="lph">🏗 BUILD MODE</div>
+      <div class="lpsec">RESIDENTIAL</div>
+      <div class="bg">
+        <button class="bb s" data-type="house" style="--ac:var(--teal);background:rgba(42,255,219,.04)"><span class="bi">🏠</span><div class="bn"><span class="bname">HOUSE</span><span class="bcost">💰 200</span><span class="bfx">+4 pop · +2 😊</span></div><span class="bk">H</span></button>
+        <button class="bb" data-type="apart" style="--ac:#88aaff;background:rgba(136,170,255,.04)"><span class="bi">🏢</span><div class="bn"><span class="bname">APARTMENT</span><span class="bcost">💰 500</span><span class="bfx">+12 pop · +3 😊</span></div><span class="bk">A</span></button>
+        <button class="bb locked" data-type="sky" id="bb-sky" style="--ac:#cc88ff;background:rgba(180,100,255,.04)"><span class="bi">🏙️</span><div class="bn"><span class="bname">SKYSCRAPER</span><span class="bcost">💰 1500</span><span class="bfx">+40 pop 🔒save $1500</span></div><span class="bk">K</span></button>
+      </div>
+      <div class="lpsec">INDUSTRY</div>
+      <div class="bg">
+        <button class="bb" data-type="factory" style="--ac:var(--orange);background:rgba(255,155,61,.05)"><span class="bi">🏭</span><div class="bn"><span class="bname">FACTORY</span><span class="bcost">💰 500</span><span class="bfx">+$12/sec income</span></div><span class="bk">F</span></button>
+        <button class="bb" data-type="shop" style="--ac:var(--pink);background:rgba(255,107,157,.05)"><span class="bi">🏪</span><div class="bn"><span class="bname">SHOP</span><span class="bcost">💰 350</span><span class="bfx">+$7/sec · +3 😊</span></div><span class="bk">S</span></button>
+      </div>
+      <div class="lpsec">CIVIC</div>
+      <div class="bg">
+        <button class="bb" data-type="park" style="--ac:var(--green);background:rgba(110,255,122,.05)"><span class="bi">🌳</span><div class="bn"><span class="bname">PARK</span><span class="bcost">💰 150</span><span class="bfx">+8 😊 · +1 pop</span></div><span class="bk">P</span></button>
+        <button class="bb" data-type="bush" style="--ac:#44cc44;background:rgba(68,204,68,.05)"><span class="bi">🌿</span><div class="bn"><span class="bname">BUSH</span><span class="bcost">💰 30</span><span class="bfx">+2 😊 · decor</span></div><span class="bk">B</span></button>
+        <button class="bb" data-type="fence" style="--ac:#aa8844;background:rgba(170,136,68,.05)"><span class="bi">🪵</span><div class="bn"><span class="bname">FENCE</span><span class="bcost">💰 20</span><span class="bfx">borders · decor</span></div><span class="bk">E</span></button>
+        <button class="bb" data-type="road" style="--ac:#9999bb;background:rgba(150,150,200,.04)"><span class="bi">🛣️</span><div class="bn"><span class="bname">ROAD</span><span class="bcost">💰 50</span><span class="bfx">enables cars</span></div><span class="bk">R</span></button>
+        <button class="bb" data-type="hospital" style="--ac:#ff6666;background:rgba(255,220,220,.06)"><span class="bi">🏥</span><div class="bn"><span class="bname">HOSPITAL</span><span class="bcost">💰 800</span><span class="bfx">+10 pop · +20 😊</span></div><span class="bk">J</span></button>
+        <button class="bb" data-type="school" style="--ac:#ffcc00;background:rgba(255,215,0,.06)"><span class="bi">🏫</span><div class="bn"><span class="bname">SCHOOL</span><span class="bcost">💰 600</span><span class="bfx">+8 pop · +12 😊</span></div><span class="bk">C</span></button>
+        <button class="bb" data-type="lake" style="--ac:#2299ff;background:rgba(34,153,255,.05)"><span class="bi">🌊</span><div class="bn"><span class="bname">LAKE</span><span class="bcost">💰 100</span><span class="bfx">+5 😊 · scenic</span></div><span class="bk">L</span></button>
+        <button class="bb" data-type="bridge" style="--ac:#cc9933;background:rgba(180,140,60,.05)"><span class="bi">🌉</span><div class="bn"><span class="bname">BRIDGE</span><span class="bcost">💰 150</span><span class="bfx">over water · auto-dir</span></div><span class="bk">G</span></button>
+      </div>
+      <div class="lpsec">TOOLS</div>
+      <div class="bg">
+        <button class="bb" data-type="demolish" style="--ac:var(--red)"><span class="bi">💥</span><div class="bn"><span class="bname">DEMOLISH</span><span class="bcost">+25% refund</span><span class="bfx">remove building</span></div><span class="bk">D</span></button>
+      </div>
+    </div>
+
+    <!-- CANVAS -->
+    <div id="cw">
+      <canvas id="sky-backdrop"></canvas>
+      <canvas id="gc"></canvas>
+      <div id="wl"><canvas id="rcv"></canvas><div id="fov"></div></div>
+      <canvas id="fog-clouds" style="opacity:0;transition:opacity 2s"></canvas>
+      <div id="tt"></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div id="rp">
+      <div class="rc">
+        <div class="rt">📊 CITY STATS</div>
+        <div class="sg">
+          <div class="sb"><span class="sv" id="stb" style="color:var(--teal)">0</span><span class="sl">Buildings</span></div>
+          <div class="sb"><span class="sv" id="str" style="color:var(--dim)">0</span><span class="sl">Roads</span></div>
+          <div class="sb"><span class="sv" id="stf" style="color:var(--orange)">0</span><span class="sl">Industry</span></div>
+          <div class="sb"><span class="sv" id="stp" style="color:var(--green)">0</span><span class="sl">Parks</span></div>
+        </div>
+      </div>
+      <div class="rc">
+        <div class="rt">🎯 CITY HEALTH</div>
+        <div class="pr"><div class="ph"><span>Economy</span><span id="phe">25%</span></div><div class="pt"><div class="pf" id="pfe" style="width:25%;background:linear-gradient(90deg,#CC9900,#FFD700)"></div></div></div>
+        <div class="pr"><div class="ph"><span>Population</span><span id="php">0%</span></div><div class="pt"><div class="pf" id="pfp" style="width:0%;background:linear-gradient(90deg,#009999,#2AFFDB)"></div></div></div>
+        <div class="pr"><div class="ph"><span>Happiness</span><span id="phh">50%</span></div><div class="pt"><div class="pf" id="pfh" style="width:50%;background:linear-gradient(90deg,#22aa33,#6EFF7A)"></div></div></div>
+      </div>
+      <div class="rc">
+        <div class="rt">🏆 LEADERBOARD</div>
+        <table class="lbt"><thead><tr><th>#</th><th>NAME</th><th>POP</th><th>SCORE</th></tr></thead>
+        <tbody id="lbb"><tr><td colspan="4" style="text-align:center;color:var(--dim);font-size:9px;padding:10px">No scores yet!</td></tr></tbody></table>
+      </div>
+      <div class="rc">
+        <div class="rt">🎖 ACHIEVEMENTS</div>
+        <div class="ag">
+          <span class="ab g" id="a1">🏗 Builder</span>
+          <span class="ab g" id="a2">👥 Town</span>
+          <span class="ab t" id="a3">💰 Rich</span>
+          <span class="ab t" id="a4">🏭 Industry</span>
+          <span class="ab p" id="a5">🏙 City</span>
+          <span class="ab p" id="a6">😄 Utopia</span>
+        </div>
+      </div>
+      <div class="rc">
+        <div class="rt">📅 SCORE BREAKDOWN</div>
+        <div style="font-size:9px;color:var(--dim);line-height:2.2">
+          Pop × 10: <span id="sps-pop" style="color:var(--teal)">0</span><br>
+          Happy × 5: <span id="sps-hap" style="color:var(--green)">0</span><br>
+          Money × 0.04: <span id="sps-mon" style="color:var(--gold)">0</span><br>
+          Days × 2: <span id="sps-day" style="color:var(--orange)">0</span><br>
+          <span style="font-family:var(--px);font-size:7px;color:var(--gold)">TOTAL: <span id="sps-total">0</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bot">
+    <button class="nb on" data-tab="city">🏙 CITY</button>
+    <button class="nb" data-tab="build">🔨 BUILD</button>
+    <button class="nb" data-tab="economy">💹 ECONOMY</button>
+    <button class="nb" data-tab="forum">💬 FORUM</button>
+  </div>
+</div>
+
+<!-- WEATHER BANNER -->
+<div id="weather-banner"></div>
+
+<!-- TIME OF DAY POPUP -->
+<div id="time-popup"></div>
+
+<!-- MAYOR EARN COOLDOWN -->
+<div id="mayor-earn-cooldown">⏳ COLLECTING...</div>
+
+<!-- ECONOMY PANEL -->
+<div id="eco-panel">
+  <div class="eco-box">
+    <div class="eco-title">💹 ECONOMY DASHBOARD</div>
+    <div class="eco-grid">
+      <div class="eco-card"><span class="eco-val" id="eco-money" style="color:var(--gold)">$0</span><span class="eco-lbl">Treasury</span><div class="eco-bar-bg"><div class="eco-bar" id="eco-bar-money" style="background:var(--gold)"></div></div></div>
+      <div class="eco-card"><span class="eco-val" id="eco-income" style="color:var(--green)">$0/s</span><span class="eco-lbl">Income Rate</span><div class="eco-bar-bg"><div class="eco-bar" id="eco-bar-income" style="background:var(--green)"></div></div></div>
+      <div class="eco-card"><span class="eco-val" id="eco-earned" style="color:var(--teal)">$0</span><span class="eco-lbl">Total Earned</span><div class="eco-bar-bg"><div class="eco-bar" id="eco-bar-earned" style="background:var(--teal)"></div></div></div>
+      <div class="eco-card"><span class="eco-val" id="eco-score" style="color:var(--orange)">0</span><span class="eco-lbl">Score</span><div class="eco-bar-bg"><div class="eco-bar" id="eco-bar-score" style="background:var(--orange)"></div></div></div>
+    </div>
+    <div style="font-family:var(--px);font-size:7px;color:var(--gold);margin-bottom:8px;letter-spacing:1px">📋 CITY LOG</div>
+    <div class="eco-log" id="eco-log"><div class="eco-log-entry eco-log-info">City founded. Start building!</div></div>
+    <div style="margin-top:12px;text-align:center;font-family:var(--px);font-size:7px;color:var(--dim);margin-bottom:8px">💰 MAYOR COLLECT — Click to earn a bonus every 30s</div>
+    <div style="display:flex;gap:8px;justify-content:center">
+      <button id="mayor-earn-btn">🪙 COLLECT $50 BONUS</button>
+    </div>
+    <button class="eco-close" id="eco-close-btn">✕ CLOSE ECONOMY</button>
+  </div>
+</div>
+
+<!-- FORUM PANEL -->
+<div id="forum-panel">
+  <div class="forum-box">
+    <div class="forum-header">
+      <div class="forum-title">💬 CITY FORUM</div>
+      <button class="forum-close" id="forum-close-btn">✕ CLOSE</button>
+    </div>
+    <div class="forum-posts" id="forum-posts">
+      <div class="forum-empty">No posts yet! Share a city strategy.</div>
+    </div>
+    <div class="forum-compose">
+      <textarea class="forum-inp" id="forum-input" rows="2" placeholder="Share your city building strategy..."></textarea>
+      <div class="forum-btns">
+        <button class="forum-btn" id="forum-post-btn">📤 POST</button>
+        <button class="forum-btn del" id="forum-clear-btn">🗑 CLEAR ALL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tc2"></div>
+
+<div class="mo" id="modal">
+  <div class="mb">
+    <div class="mt" id="modal-title">🏆 CITY COMPLETE!</div>
+    <div style="font-family:var(--px);font-size:9px;color:var(--teal);text-align:center;margin-bottom:8px" id="modal-score">SCORE: 0</div>
+    <div style="font-family:var(--px);font-size:7px;color:var(--dim);text-align:center;margin-bottom:14px;line-height:2" id="modal-sub"></div>
+    <div style="display:flex;gap:8px;justify-content:center">
+      <button class="mc" style="flex:1" onclick="saveScore()">💾 SAVE SCORE</button>
+      <button class="mc" style="flex:1;color:var(--red);border-color:var(--red)" onclick="location.reload()">↺ RESTART</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="modal-lb">
+  <div class="mb">
+    <div class="mt">🏆 LEADERBOARD</div>
+    <table class="lbt" style="width:100%">
+      <thead><tr><th>#</th><th>NAME</th><th>POP</th><th>SCORE</th></tr></thead>
+      <tbody id="modal-lbb"></tbody>
+    </table>
+    <button class="mc" id="clb">✕ CLOSE</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
